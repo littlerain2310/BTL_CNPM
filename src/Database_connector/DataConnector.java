@@ -3,17 +3,10 @@ import javax.xml.transform.Result;
 import java.sql.*;
 
 public class DataConnector {
-    public static void main(String args[])
-    {
-        Connection con;
-        Statement stmt = null;
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = null;
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/num_2","root", "");
-            String sql = "SELECT ten_cuoc_van_dong,ngay_bd,ngay_kt FROM `cuoc_van_dong` Where ID =1  ";
-            try {
+    static Connection conn = null;
+    static Statement stmt = null;
+    public static void SQL_Code(String sql) throws SQLException {
+        try {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -24,13 +17,25 @@ public class DataConnector {
                     if (i > 1) System.out.print(",  ");
                     String columnValue = rs.getString(i);
                     System.out.print( rsmd.getColumnName(i) + " : "+ columnValue );
-    }
+                }
             }}
-            catch (SQLException e ) {
-                throw new Error("Problem", e);
-            } finally {
-                if (stmt != null) { stmt.close(); }
-            }
+        catch (SQLException e ) {
+            throw new Error("Problem", e);
+        } finally {
+            if (stmt != null) { stmt.close(); }
+        }
+    }
+    public static void main(String args[])
+    {
+
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+//            Connection conn = null;
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/hung_debug","root", "");
+            //Anh em chỉ cần viết câu lệnh vào đây
+            String sql = "SELECT * FROM `ho_gia_dinh`  ";
+            SQL_Code(sql);
             System.out.print("Database is connected !");
             //conn.close();
         }
